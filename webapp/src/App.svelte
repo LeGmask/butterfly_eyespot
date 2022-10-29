@@ -1,45 +1,71 @@
 <script lang="ts">
-  import svelteLogo from './assets/svelte.svg'
-  import Counter from './lib/Counter.svelte'
+	import {Canvas, Layer, t} from "svelte-canvas";
+
+	let zoom = 1;
+	let camera = {x: 0, y: 0};
+	let isDragging = false;
+	let dragStart = {x: 0, y: 0};
+
+
+	$: render = ({context, width, height}) => {
+		context.strokeStyle = "lightgrey";
+
+		context.scale(zoom, zoom);
+		context.translate(camera.x, camera.y);
+
+		let grid_size = 101;
+		let grid_width = Math.ceil(width / grid_size);
+		let grid_height = Math.ceil(height / grid_size);
+
+		// draw grid shape
+		context.beginPath();
+
+		for (let x = 0; x < grid_size; x++) {
+			context.moveTo(x * grid_height, 0);
+			context.lineTo(x * grid_height, height);
+
+		}
+
+		for (let y = 0; y < grid_size; y++) {
+			context.moveTo(0, y * grid_width);
+			context.lineTo(width, y * grid_width);
+		}
+
+		context.stroke();
+
+		requestAnimationFrame(() => {
+			context.resetTransform();
+			context.fillStyle = "white";
+			context.font = "20px Arial";
+			context.fillText(`Zoom: ${zoom}`, 10, 30);
+			context.fillText(`Camera: ${camera.x}, ${camera.y}`, 10, 60);
+		});
+	};
+
+	function handleMouseDown(event) {
+		isDragging = true;
+		dragStart = {x: event.clientX, y: event.clientY};
+	}
+
+	function handleMouseUp(event) {
+		isDragging = false;
+	}
+
+	function handleMouseMove(event: MouseEvent) {
+		if (isDragging) {
+			camera.x += event.clientX / zoom - dragStart.x;
+			camera.y += event.clientY / zoom - dragStart.y;
+			dragStart = {x: event.clientX, y: event.clientY};
+		}
+	}
+
+
+	let innerWidth = window.innerWidth
+	let innerHeight = window.innerHeight
 </script>
 
-<main>
-  <div>
-    <a href="https://vitejs.dev" target="_blank"> 
-      <img src="/vite.svg" class="logo" alt="Vite Logo" />
-    </a>
-    <a href="https://svelte.dev" target="_blank"> 
-      <img src={svelteLogo} class="logo svelte" alt="Svelte Logo" />
-    </a>
-  </div>
-  <h1>Vite + Svelte</h1>
-
-  <div class="card">
-    <Counter />
-  </div>
-
-  <p>
-    Check out <a href="https://github.com/sveltejs/kit#readme" target="_blank">SvelteKit</a>, the official Svelte app framework powered by Vite!
-  </p>
-
-  <p class="read-the-docs">
-    Click on the Vite and Svelte logos to learn more
-  </p>
-</main>
-
-<style>
-  .logo {
-    height: 6em;
-    padding: 1.5em;
-    will-change: filter;
-  }
-  .logo:hover {
-    filter: drop-shadow(0 0 2em #646cffaa);
-  }
-  .logo.svelte:hover {
-    filter: drop-shadow(0 0 2em #ff3e00aa);
-  }
-  .read-the-docs {
-    color: #888;
-  }
-</style>
+<svelte:window bind:innerWidth bind:innerHeight/>
+<Canvas width={800} height={800} on:mousemove={handleMouseMove} on:mousedown={handleMouseDown}
+		on:mouseup={handleMouseUp}>
+	<Layer {render}/>
+</Canvas>

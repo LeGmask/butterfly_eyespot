@@ -4,11 +4,15 @@ specifiers:
   '@sveltejs/vite-plugin-svelte': ^1.1.0
   '@tsconfig/svelte': ^3.0.0
   svelte: ^3.52.0
+  svelte-canvas: ^0.7.1
   svelte-check: ^2.9.2
   svelte-preprocess: ^4.10.7
   tslib: ^2.4.0
   typescript: ^4.6.4
   vite: ^3.2.0
+
+dependencies:
+  svelte-canvas: 0.7.1
 
 devDependencies:
   '@sveltejs/vite-plugin-svelte': 1.1.0_svelte@3.52.0+vite@3.2.1
@@ -740,6 +744,10 @@ packages:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
     dev: true
+
+  /svelte-canvas/0.7.1:
+    resolution: {integrity: sha512-MsOSxPyown4BTVTuR9LUFiLD/GrD8pubxcKSFGiiRr6IR5jPkBE7WDedwkE4auZw+gniqGSmuXjhC+VltpcZAQ==}
+    dev: false
 
   /svelte-check/2.9.2_svelte@3.52.0:
     resolution: {integrity: sha512-DRi8HhnCiqiGR2YF9ervPGvtoYrheE09cXieCTEqeTPOTJzfoa54Py8rovIBv4bH4n5HgZYIyTQ3DDLHQLl2uQ==}
