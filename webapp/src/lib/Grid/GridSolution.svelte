@@ -33,8 +33,10 @@
 	}
 </script>
 
-{#each getMaxPigment($solution.P0, $solution.P1, $solution.P2) as row, i}
-	{#each row as col, j}
-		<Square x={j} y={i} color={indexToColor(col)}/>
+{#if $solution}
+	{#each getMaxPigment($solution.P0, $solution.P1, $solution.P2) as row, i}
+		{#each row as col, j}
+			<Square x={j} y={i} color={indexToColor(col)}/>
+		{/each}
 	{/each}
-{/each}
+{/if}

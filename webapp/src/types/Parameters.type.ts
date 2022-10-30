@@ -1,5 +1,6 @@
 export type Parameters = {
 	// simulation parameters
+	grid: boolean;
 	grid_size: number;
 	time_span: [number, number];
 	time_step: number;

@@ -29,24 +29,24 @@ def run_simulation():
 		A0_pos = [(pos[1], pos[0]) for pos in request.json['A0_pos']]
 
 		model = Model(
-			grid_size=request.json['grid_size'],
-			time_span=(request.json['time_span'][0], request.json['time_span'][1]),
-			time_step=request.json['time_step'],
-			k1=request.json['k1'],
-			k2=request.json['k2'],
-			k3=request.json['k3'],
-			k4=request.json['k4'],
-			k5=request.json['k5'],
-			D1=request.json['D1'],
-			D2=request.json['D2'],
-			M1_0=request.json['M1_0'],
-			M2_0=request.json['M2_0'],
-			P0_0=request.json['P0_0'],
-			P1_0=request.json['P1_0'],
-			P2_0=request.json['P2_0'],
-			A_0=request.json['A_0'],
-			P0_0_with_precursor=request.json['P0_0_with_precursor'],
-			A0_0_with_precursor=request.json['A0_0_with_precursor']
+			grid_size=int(request.json['grid_size']),
+			time_span=(int(request.json['time_span'][0]), int(request.json['time_span'][1])),
+			time_step=float(request.json['time_step']),
+			k1=float(request.json['k1']),
+			k2=float(request.json['k2']),
+			k3=float(request.json['k3']),
+			k4=float(request.json['k4']),
+			k5=float(request.json['k5']),
+			D1=float(request.json['D1']),
+			D2=float(request.json['D2']),
+			M1_0=float(request.json['M1_0']),
+			M2_0=float(request.json['M2_0']),
+			P0_0=float(request.json['P0_0']),
+			P1_0=float(request.json['P1_0']),
+			P2_0=float(request.json['P2_0']),
+			A_0=float(request.json['A_0']),
+			P0_0_with_precursor=float(request.json['P0_0_with_precursor']),
+			A0_0_with_precursor=float(request.json['A0_0_with_precursor'])
 		)
 
 		model.append_A0_pos(A0_pos)
@@ -61,7 +61,7 @@ def run_simulation():
 			'P1': P1.tolist(),
 			'P2': P2.tolist(),
 		}
-		# return model.solution.y.tolist()
+	# return model.solution.y.tolist()
 	else:
 		return 'Content-Type not supported!'
 

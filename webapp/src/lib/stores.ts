@@ -2,6 +2,7 @@ import {writable} from "svelte/store";
 import type {Solution} from "../types/Solution.type";
 import type {Square} from "../types/Square.type";
 import type {Parameters} from "../types/Parameters.type";
+import type {Camera} from "../types/Camera.type";
 
 function createSolution() {
 	const {subscribe, set, update} = writable<Solution | null>(null);
@@ -21,12 +22,13 @@ function createPrecursorSquares() {
 		subscribe,
 		set,
 		update,
-		reset: () => set(null),
+		reset: () => set([]),
 	}
 }
 
 function createParameters() {
 	let default_parameters: Parameters = {
+		grid: true,
 		grid_size: 21,
 		time_span: [0, 15],
 		time_step: 0.1,
@@ -58,6 +60,18 @@ function createParameters() {
 	}
 }
 
+function createCamera() {
+	const {subscribe, set, update} = writable<Camera>({zoom: 1, x: 0, y: 0});
+
+	return {
+		subscribe,
+		set,
+		update,
+		reset: () => set({zoom: 1, x: 0, y: 0}),
+	}
+}
+
 export const solution = createSolution();
 export const precursorSquares = createPrecursorSquares();
 export const parameters = createParameters();
+export const camera = createCamera();
