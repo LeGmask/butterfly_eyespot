@@ -4,7 +4,7 @@
 	export let grid_size;
 
 	$: render = ({context, width, height}) => {
-		context.strokeStyle = "lightgrey";
+		context.strokeStyle = "lightgray";
 		let grid_width = Math.floor(width / grid_size);
 		let grid_height = Math.floor(height / grid_size);
 

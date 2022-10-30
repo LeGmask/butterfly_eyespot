@@ -2,8 +2,44 @@
 	import {Canvas, Layer} from "svelte-canvas";
 	import Square from "./Square.svelte";
 	import Grid from "./Grid.svelte";
+	import axios from "axios";
+	import {api} from "../api";
+	import type {Solution} from "../../types/Solution.type";
 
-	export let grid_size = 21;
+	let solution: Solution;
+
+	function getMaxPigment(P0, P1, P2) {
+		let output = []
+		for (let i = 0; i < P0.length; i++) {
+			let currentRow = []
+			for (let j = 0; j < P0[i].length; j++) {
+				let data = [P0[i][j], P1[i][j], P2[i][j]]
+				// get the index of the max value
+				let maxIndex = data.indexOf(Math.max(...data))
+				currentRow.push(maxIndex)
+			}
+			output.push(currentRow)
+		}
+		return output
+	}
+
+	function indexToColor(index) {
+		switch (index) {
+			case 0:
+				return "#70420E"
+			case 1:
+				return "#040404"
+
+			case 2:
+				return "#BFA440"
+
+			default:
+				return "#ffffff"
+		}
+	}
+
+
+	export let grid_size = 10;
 	export let debug = false;
 
 	let canvas: Canvas;
@@ -87,6 +123,31 @@
 		}
 	}
 
+	function getIndexMax(arr) {
+		if (arr.length === 0) {
+			return -1;
+		}
+
+		let max = arr[0];
+		let maxIndex = 0;
+
+		for (let i = 1; i < arr.length; i++) {
+			if (arr[i] > max) {
+				maxIndex = i;
+				max = arr[i];
+			}
+		}
+
+		return maxIndex;
+	}
+
+	async function getData() {
+		const response = await api.post("/run", {
+			"grid_size": grid_size,
+			"A0_pos": squares
+		});
+		solution = response.data;
+	}
 
 	let innerWidth = window.innerWidth
 	let innerHeight = window.innerHeight
@@ -101,8 +162,19 @@
 <Canvas bind:this={canvas} width={dim} height={dim} on:mousemove={handleMouseMove} on:mousedown={handleMouseDown}
 		on:mouseup={handleMouseUp} on:wheel={handleWheel} on:click={handleClick}>
 	<Layer {render}/>
-	<Grid {grid_size}/>
+
+	{#if solution}
+		{#each getMaxPigment(solution.P0, solution.P1, solution.P2) as row, i}
+			{#each row as col, j}
+				<Square x={j} y={i} {grid_size} color={indexToColor(col)}/>
+			{/each}
+		{/each}
+	{/if}
 	{#each squares as [x, y]}
 		<Square x={x} y={y} {grid_size}/>
 	{/each}
+	<Grid bind:grid_size/>
+
 </Canvas>
+
+<button on:click={getData}>get data</button>
