@@ -9,6 +9,12 @@
 
 	let grid_size = 21;
 
+	let innerWidth = window.innerWidth;
+	let innerHeight = window.innerHeight;
+	let dim: number; // we need to use a watcher to update this
+
+	$: dim = Math.min(innerWidth, innerHeight);
+
 
 	async function getData() {
 		const response = await api.post("/run", {
@@ -19,7 +25,9 @@
 	}
 </script>
 
-<GridCanvas grid_size={grid_size} debug={true}>
+<svelte:window bind:innerWidth bind:innerHeight/> <!-- bind:innerWidth bind:innerHeight in case window is resized... -->
+
+<GridCanvas grid_size={grid_size} debug={true} {dim}>
 	{#if $solution}
 		<GridSolution {grid_size}/>
 	{/if}
