@@ -2,8 +2,6 @@
 	import Square from "./Square.svelte";
 	import {solution} from "../stores.js";
 
-	export let grid_size;
-
 	function getMaxPigment(P0, P1, P2) {
 		let output = []
 		for (let i = 0; i < P0.length; i++) {
@@ -37,6 +35,6 @@
 
 {#each getMaxPigment($solution.P0, $solution.P1, $solution.P2) as row, i}
 	{#each row as col, j}
-		<Square x={j} y={i} {grid_size} color={indexToColor(col)}/>
+		<Square x={j} y={i} color={indexToColor(col)}/>
 	{/each}
 {/each}

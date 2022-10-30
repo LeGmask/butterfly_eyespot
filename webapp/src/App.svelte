@@ -2,12 +2,11 @@
 	import {api} from "./lib/api";
 	import Square from "./lib/Grid/Square.svelte";
 	import {solution} from "./lib/stores";
-	import {precursorSquares} from "./lib/stores.js";
+	import {parameters, precursorSquares} from "./lib/stores.js";
 	import GridCanvas from "./lib/Grid/GridCanvas.svelte";
 	import Grid from "./lib/Grid/Grid.svelte";
 	import GridSolution from "./lib/Grid/GridSolution.svelte";
-
-	let grid_size = 21;
+	import {get} from "svelte/store";
 
 	let innerWidth = window.innerWidth;
 	let innerHeight = window.innerHeight;
@@ -18,7 +17,7 @@
 
 	async function getData() {
 		const response = await api.post("/run", {
-			"grid_size": grid_size,
+			"grid_size": get(parameters).grid_size,
 			"A0_pos": $precursorSquares
 		});
 		$solution = response.data;
@@ -27,16 +26,16 @@
 
 <svelte:window bind:innerWidth bind:innerHeight/> <!-- bind:innerWidth bind:innerHeight in case window is resized... -->
 
-<GridCanvas grid_size={grid_size} debug={true} {dim}>
+<GridCanvas debug={true} {dim}>
 	{#if $solution}
-		<GridSolution {grid_size}/>
+		<GridSolution/>
 	{/if}
 
 	{#each $precursorSquares as [x, y]}
-		<Square x={x} y={y} {grid_size}/>
+		<Square x={x} y={y}/>
 	{/each}
 
-	<Grid bind:grid_size/>
+	<Grid grid_size={$parameters.grid_size}/>
 </GridCanvas>
 
 <button on:click={getData}>get data</button>

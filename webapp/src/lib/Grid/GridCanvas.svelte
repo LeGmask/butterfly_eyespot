@@ -1,9 +1,9 @@
 <script lang="ts">
 	import {Canvas, Layer} from "svelte-canvas";
-	import {precursorSquares} from "../stores";
+	import {parameters, precursorSquares} from "../stores";
+	import {get} from "svelte/store";
 
 	export let debug = false;
-	export let grid_size;
 	export let dim
 
 	let canvas: Canvas;
@@ -59,9 +59,9 @@
 
 	function handleClick(event) {
 		const ctx: CanvasRenderingContext2D = canvas.getContext()
-		let grid_square_width = Math.floor(ctx.canvas.width / grid_size);
+		let grid_square_width = Math.floor(ctx.canvas.width / get(parameters).grid_size);
 
-		let grid_square_height = Math.floor(ctx.canvas.height / grid_size);
+		let grid_square_height = Math.floor(ctx.canvas.height / get(parameters).grid_size);
 		// if the mouse has moved more than 10px, don't add a square
 		if (isDragging &&
 			Math.abs(mouseDownPos.x - event.clientX) > 10 ||
@@ -76,13 +76,13 @@
 			Math.floor((event.clientY / zoom - camera.y) / grid_square_height)
 		];
 		// if the square isn't in the grid, don't add it
-		if (targetedPoint[0] < 0 || targetedPoint[0] >= grid_size ||
-			targetedPoint[1] < 0 || targetedPoint[1] >= grid_size) {
+		if (targetedPoint[0] < 0 || targetedPoint[0] >= get(parameters).grid_size ||
+			targetedPoint[1] < 0 || targetedPoint[1] >= get(parameters).grid_size) {
 			return;
 
 		}
 		// if the square is already in the grid, remove it
-		if ($precursorSquares.some(([x, y]) => x === targetedPoint[0] && y === targetedPoint[1])) {
+		if (get(precursorSquares).some(([x, y]) => x === targetedPoint[0] && y === targetedPoint[1])) {
 			$precursorSquares = [...$precursorSquares.filter(([x, y]) => x !== targetedPoint[0] || y !== targetedPoint[1])];
 		} else {
 			$precursorSquares = [...$precursorSquares, targetedPoint];
