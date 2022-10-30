@@ -1,56 +1,17 @@
 <script lang="ts">
 	import {Canvas, Layer} from "svelte-canvas";
-	import Square from "./Square.svelte";
-	import Grid from "./Grid.svelte";
-	import axios from "axios";
-	import {api} from "../api";
-	import type {Solution} from "../../types/Solution.type";
+	import {precursorSquares} from "../stores";
 
-	let solution: Solution;
-
-	function getMaxPigment(P0, P1, P2) {
-		let output = []
-		for (let i = 0; i < P0.length; i++) {
-			let currentRow = []
-			for (let j = 0; j < P0[i].length; j++) {
-				let data = [P0[i][j], P1[i][j], P2[i][j]]
-				// get the index of the max value
-				let maxIndex = data.indexOf(Math.max(...data))
-				currentRow.push(maxIndex)
-			}
-			output.push(currentRow)
-		}
-		return output
-	}
-
-	function indexToColor(index) {
-		switch (index) {
-			case 0:
-				return "#70420E"
-			case 1:
-				return "#040404"
-
-			case 2:
-				return "#BFA440"
-
-			default:
-				return "#ffffff"
-		}
-	}
-
-
-	export let grid_size = 10;
 	export let debug = false;
+	export let grid_size;
 
 	let canvas: Canvas;
-	export let squares: Array<[number, number]> = []
 
 	let zoom = 1;
 	let camera = {x: 0, y: 0};
 	let isDragging = false;
 	let dragStart = {x: 0, y: 0};
 	let mouseDownPos = {x: 0, y: 0};
-
 
 	$: render = ({context}) => {
 		context.scale(zoom, zoom);
@@ -116,10 +77,10 @@
 		}
 
 		// if the square is already in the grid, remove it
-		if (squares.some(([x, y]) => x === targetedPoint[0] && y === targetedPoint[1])) {
-			squares = [...squares.filter(([x, y]) => x !== targetedPoint[0] || y !== targetedPoint[1])];
+		if ($precursorSquares.some(([x, y]) => x === targetedPoint[0] && y === targetedPoint[1])) {
+			$precursorSquares = [...$precursorSquares.filter(([x, y]) => x !== targetedPoint[0] || y !== targetedPoint[1])];
 		} else {
-			squares = [...squares, targetedPoint];
+			$precursorSquares = [...$precursorSquares, targetedPoint];
 		}
 	}
 
@@ -141,13 +102,6 @@
 		return maxIndex;
 	}
 
-	async function getData() {
-		const response = await api.post("/run", {
-			"grid_size": grid_size,
-			"A0_pos": squares
-		});
-		solution = response.data;
-	}
 
 	let innerWidth = window.innerWidth
 	let innerHeight = window.innerHeight
@@ -163,18 +117,5 @@
 		on:mouseup={handleMouseUp} on:wheel={handleWheel} on:click={handleClick}>
 	<Layer {render}/>
 
-	{#if solution}
-		{#each getMaxPigment(solution.P0, solution.P1, solution.P2) as row, i}
-			{#each row as col, j}
-				<Square x={j} y={i} {grid_size} color={indexToColor(col)}/>
-			{/each}
-		{/each}
-	{/if}
-	{#each squares as [x, y]}
-		<Square x={x} y={y} {grid_size}/>
-	{/each}
-	<Grid bind:grid_size/>
-
+	<slot/>
 </Canvas>
-
-<button on:click={getData}>get data</button>
