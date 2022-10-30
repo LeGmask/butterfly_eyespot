@@ -4,15 +4,24 @@ import numpy as np
 import scipy
 from scipy.integrate import solve_ivp
 
+
 # @TODO: Add docstring
 # @TODO: Add type hints
 # @TODO: clean up code (ie refactor)
 
 class Model:
-	def __init__(self, shape: int = 101, time_span: Tuple[float, float] = (0, 15),
-				 time_step: float = 0.1, k1=1.0, k2=0.05, k3=4.0,
-				 k4=0.01, k5=4.0, D1=0.002, D2=0.002):
-		self.shape = shape
+	def __init__(self, grid_size: int = 101, time_span: Tuple[float, float] = (0, 15), time_step: float = 0.1, k1=1.0,
+				 k2=0.05, k3=4.0, k4=0.01, k5=4.0, D1=0.002, D2=0.002, M1_0: float = 0, M2_0: int = 0, P0_0: int = 0.2,
+				 P1_0: int = 0, P2_0: int = 0, A_0=0, P0_0_with_precursor=0.2, A0_0_with_precursor=20):
+		self.A0_0_with_precursor = A0_0_with_precursor
+		self.P0_0_with_precursor = P0_0_with_precursor
+		self.A_0 = A_0
+		self.P2_0 = P2_0
+		self.P1_0 = P1_0
+		self.P0_0 = P0_0
+		self.M2_0 = M2_0
+		self.M1_0 = M1_0
+		self.shape = grid_size
 		self.D2 = D2
 		self.D1 = D1
 		self.k5 = k5
@@ -54,20 +63,19 @@ class Model:
 		self.solution = solve_ivp(self.function_test, (self.time_vector[0], self.time_vector[-1]), y0, args=(h, A0),
 								  t_eval=self.time_vector)
 
-	def get_initial_conditions(self, M1: float = 0, M2: int = 0, P0: int = 0.2, P1: int = 0, P2: int = 0, A=0,
-							   P0_active=0.2, A_active=20) -> Tuple[np.ndarray, np.ndarray]:
-		M1 = np.full((self.shape, self.shape), M1)
-		M2 = np.full((self.shape, self.shape), M2)
-		P0 = np.full((self.shape, self.shape), P0)
-		P1 = np.full((self.shape, self.shape), P1)
-		P2 = np.full((self.shape, self.shape), P2)
+	def get_initial_conditions(self) -> Tuple[np.ndarray, np.ndarray]:
+		M1 = np.full((self.shape, self.shape), self.M1_0)
+		M2 = np.full((self.shape, self.shape), self.M2_0)
+		P0 = np.full((self.shape, self.shape), self.P0_0)
+		P1 = np.full((self.shape, self.shape), self.P1_0)
+		P2 = np.full((self.shape, self.shape), self.P2_0)
 
-		A0 = np.full((self.shape, self.shape), A)
+		A0 = np.full((self.shape, self.shape), self.A_0)
 
 		if self.A0_pos is not None:
 			for pos in self.A0_pos:
-				A0[pos[0], pos[1]] = A_active
-				P0[pos[0], pos[1]] = P0_active
+				A0[pos[0], pos[1]] = self.A0_0_with_precursor
+				P0[pos[0], pos[1]] = self.P0_0_with_precursor
 
 		return np.concatenate((M1, M2, P0, P1, P2)).flatten(), A0
 
