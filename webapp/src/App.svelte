@@ -17,9 +17,10 @@
 
 	async function getData() {
 		const response = await api.post("/run", {
-			"grid_size": get(parameters).grid_size,
+			...get(parameters),
 			"A0_pos": $precursorSquares
 		});
+
 		$solution = response.data;
 	}
 </script>
