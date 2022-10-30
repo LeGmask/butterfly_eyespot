@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded');
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@500&display=swap');
+
+:global(body) {
+  --font-family-normal: 'Rubik', sans-serif;
+  --font-family-logo: 'Fredoka', sans-serif;
+
+  --weight-normal: 400;
+  --weight-bold: 500;
+  --weight-logo: 500;
+
+  --size-small: 14px;
+  --size-normal: 16px;
+  --size-logo: 24px;
+  --size-title: 24px;
+  --size-main-title: 32px;
+  --size-subtitle: 18px;
+  --size-subsubtitle: 16px;
+}
+
+$family-normal: var(--font-family-normal);
+$family-logo: var(--font-family-logo);
+
+$weight-normal: var(--weight-normal);
+$weight-bold: var(--weight-bold);
+$weight-logo: var(--weight-logo);
+
+$size-normal: var(--size-normal);
+$size-logo: var(--size-logo);
+$size-title: var(--size-title);
+$size-main-title: var(--size-main-title);
+$size-subtitle: var(--size-subtitle);
+$size-subsubtitle: var(--size-subsubtitle);
+$size-small: var(--size-small);
