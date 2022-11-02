@@ -56,9 +56,9 @@
 
 	function handleClick(event) {
 		const ctx: CanvasRenderingContext2D = canvas.getContext()
-		let grid_square_width = Math.floor(ctx.canvas.width / get(parameters).grid_size);
+		let grid_square_width = Math.floor(ctx.canvas.width / $parameters.grid_size);
 
-		let grid_square_height = Math.floor(ctx.canvas.height / get(parameters).grid_size);
+		let grid_square_height = Math.floor(ctx.canvas.height / $parameters.grid_size);
 		// if the mouse has moved more than 10px, don't add a square
 		if (isDragging &&
 			Math.abs(mouseDownPos.x - event.clientX) > 10 ||
@@ -73,13 +73,13 @@
 			Math.floor(((event.clientY - 10) / $camera.zoom - $camera.y) / grid_square_height)
 		];
 		// if the square isn't in the grid, don't add it
-		if (targetedPoint[0] < 0 || targetedPoint[0] >= get(parameters).grid_size ||
-			targetedPoint[1] < 0 || targetedPoint[1] >= get(parameters).grid_size) {
+		if (targetedPoint[0] < 0 || targetedPoint[0] >= $parameters.grid_size ||
+			targetedPoint[1] < 0 || targetedPoint[1] >= $parameters.grid_size) {
 			return;
 
 		}
 		// if the square is already in the grid, remove it
-		if (get(precursorSquares).some(([x, y]) => x === targetedPoint[0] && y === targetedPoint[1])) {
+		if ($precursorSquares.some(([x, y]) => x === targetedPoint[0] && y === targetedPoint[1])) {
 			$precursorSquares = [...$precursorSquares.filter(([x, y]) => x !== targetedPoint[0] || y !== targetedPoint[1])];
 		} else {
 			$precursorSquares = [...$precursorSquares, targetedPoint];
@@ -101,9 +101,9 @@
   @use "src/scss/colors";
 
   :global(canvas) {
-	margin: 10px;
+    margin: 10px;
     background-color: colors.$grey-1000;
-	border-radius: 10px;
-	padding: 20px;
+    border-radius: 10px;
+    padding: 20px;
   }
 </style>

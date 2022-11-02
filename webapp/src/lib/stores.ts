@@ -47,8 +47,8 @@ function createParameters() {
 		P0_0: 0.2,
 		P1_0: 0,
 		P2_0: 0,
-		P0_0_with_precursor: 0,
-		A0_0_with_precursor: 20
+		P0_0_at_foci: 0,
+		A_0_at_foci: 20
 	}
 	const {subscribe, set, update} = writable<Parameters>(default_parameters);
 

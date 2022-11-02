@@ -21,6 +21,6 @@ export type Parameters = {
 	P0_0: number;
 	P1_0: number;
 	P2_0: number;
-	P0_0_with_precursor: number;
-	A0_0_with_precursor: number;
+	P0_0_at_foci: number;
+	A_0_at_foci: number;
 }

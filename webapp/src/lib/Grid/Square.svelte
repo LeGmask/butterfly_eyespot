@@ -9,8 +9,8 @@
 	export let color: string = "white";
 
 	$: render = ({context, width, height}) => {
-		let grid_square_width = Math.floor(width / get(parameters).grid_size);
-		let grid_square_height = Math.floor(height / get(parameters).grid_size);
+		let grid_square_width = Math.floor(width / $parameters.grid_size);
+		let grid_square_height = Math.floor(height / $parameters.grid_size);
 
 		context.fillStyle = color;
 

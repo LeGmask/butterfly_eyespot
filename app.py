@@ -19,6 +19,7 @@ def home(path):
 	return send_from_directory('dist', path)
 
 
+# Main path for the API
 @app.route("/run", methods=['POST'])
 def run_simulation():
 	content_type = request.headers.get('Content-Type')
@@ -28,6 +29,7 @@ def run_simulation():
 		# numpy as row and column inverted, so we need to invert data from request
 		A0_pos = [(pos[1], pos[0]) for pos in request.json['A0_pos']]
 
+		# Create model with the given parameters
 		model = Model(
 			grid_size=int(request.json['grid_size']),
 			time_span=(int(request.json['time_span'][0]), int(request.json['time_span'][1])),
@@ -45,15 +47,20 @@ def run_simulation():
 			P1_0=float(request.json['P1_0']),
 			P2_0=float(request.json['P2_0']),
 			A_0=float(request.json['A_0']),
-			P0_0_with_precursor=float(request.json['P0_0_with_precursor']),
-			A0_0_with_precursor=float(request.json['A0_0_with_precursor'])
+			P0_0_at_foci=float(request.json['P0_0_at_foci']),
+			A_0_at_foci=float(request.json['A_0_at_foci'])
 		)
 
-		model.append_A0_pos(A0_pos)
+		# we sync the model with the given foci
+		model.sync_focis(A0_pos)
+
+		# Run the simulation
 		model.solve()
 
+		# Extract the latest state of the model
 		M1, M2, P0, P1, P2 = model.restore_dimension(model.solution.y[:, -1])
 
+		# Return the result
 		return {
 			'M1': M1.tolist(),
 			'M2': M2.tolist(),
@@ -61,7 +68,7 @@ def run_simulation():
 			'P1': P1.tolist(),
 			'P2': P2.tolist(),
 		}
-	# return model.solution.y.tolist()
+
 	else:
 		return 'Content-Type not supported!'
 
