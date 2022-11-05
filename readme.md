@@ -1,12 +1,7 @@
 # butterfly eyespot
 
-> Modelling butterfly wing eyespot patterns
-<div style="display: flex;flex-wrap: wrap;">
-	<img src="images/simu_1.png" style="max-width: 250px;object-fit: cover; height:100%; margin:5px;">
-	<img src="images/simu_2.png" style="max-width: 250px;object-fit: cover; height:100%; margin:5px;">
-    <img src="images/simu_3.png" style="max-width: 250px;object-fit: cover; height:100%; margin:5px;">
-	<img src="images/simu_4.png" style="max-width: 250px;object-fit: cover; height:100%; margin:5px;">
-</div>
+> [Modelling](#some-results) butterfly wing eyespot patterns
+
 
 This is a monorepo containing :
 
@@ -55,3 +50,11 @@ python app.py
 ## License
 
 This project is under [MIT](./license) license.
+
+## Some results
+<div style="display: flex;flex-wrap: wrap;">
+	<img src="images/simu_1.png" style="max-width: 250px;object-fit: cover; height:100%; margin:5px;">
+	<img src="images/simu_2.png" style="max-width: 250px;object-fit: cover; height:100%; margin:5px;">
+    <img src="images/simu_3.png" style="max-width: 250px;object-fit: cover; height:100%; margin:5px;">
+	<img src="images/simu_4.png" style="max-width: 250px;object-fit: cover; height:100%; margin:5px;">
+</div>
