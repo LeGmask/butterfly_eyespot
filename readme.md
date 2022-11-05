@@ -1,6 +1,12 @@
 # butterfly eyespot
 
 > Modelling butterfly wing eyespot patterns
+<div style="display: flex;flex-wrap: wrap;">
+	<img src="images/simu_1.png" style="max-width: 250px;object-fit: cover; height:100%; margin:5px;">
+	<img src="images/simu_2.png" style="max-width: 250px;object-fit: cover; height:100%; margin:5px;">
+    <img src="images/simu_3.png" style="max-width: 250px;object-fit: cover; height:100%; margin:5px;">
+	<img src="images/simu_4.png" style="max-width: 250px;object-fit: cover; height:100%; margin:5px;">
+</div>
 
 This is a monorepo containing :
 
@@ -15,7 +21,6 @@ firstly install the project dependencies with [poetry](https://python-poetry.org
 ```bash
 poetry install
 ```
-
 
 ### Python package
 
@@ -35,15 +40,18 @@ model.show()
 ```
 
 ### Jupyter notebook
+
 Everything you need is in the [notebook](./main.ipynb).
 
-
 ### Svelte app
+
 You need to build the app first, see [webapp readme](./webapp/README.md).
 Then you can run the api server (it will serve the app and the api):
+
 ```bash
 python app.py
 ```
 
 ## License
+
 This project is under [MIT](./license) license.
