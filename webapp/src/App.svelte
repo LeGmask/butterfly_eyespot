@@ -39,7 +39,7 @@
   .flex-container {
     display: flex;
     flex-direction: row;
-    align-items: center;
+    //align-items: center;
     //flex-wrap: wrap;
   }
 </style>

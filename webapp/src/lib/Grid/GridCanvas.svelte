@@ -104,6 +104,6 @@
     margin: 10px;
     background-color: colors.$grey-1000;
     border-radius: 10px;
-    padding: 20px;
+    //padding: 20px;
   }
 </style>
