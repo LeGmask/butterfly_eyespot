@@ -61,7 +61,7 @@ class Model:
 
 		self.solution = None
 		self.time_vector = np.arange(time_span[0], time_span[1] + time_step, time_step)
-		self.focis_pos: List[(int, int)] | None = None
+		self.foci_pos: List[(int, int)] | None = None
 
 	@staticmethod
 	def laplacian_2d(u: np.ndarray, h: float) -> np.ndarray:
@@ -118,7 +118,7 @@ class Model:
 		"""
 		The get_initial_conditions function returns a tuple of two arrays. T
 		he first array is the initial conditions for all variables in the system, and the second array is the initial  condition for A  at each point in space.
-		Also the initial conditions for the foci are set if there are focis.
+		Also the initial conditions for the foci are set if there are foci.
 		
 		:return: y0 and A0
 		"""
@@ -130,60 +130,60 @@ class Model:
 
 		A0 = np.full((self.shape, self.shape), self.A_0)
 
-		if self.focis_pos is not None:
-			for pos in self.focis_pos:
+		if self.foci_pos is not None:
+			for pos in self.foci_pos:
 				A0[pos[0], pos[1]] = self.A_0_at_foci
 				P0[pos[0], pos[1]] = self.P0_0_at_foci
 
 		return np.concatenate((M1, M2, P0, P1, P2)).flatten(), A0
 
-	def append_focis(self, pos: Tuple[int, int] | List[Tuple[int, int]]) -> None:
+	def append_foci(self, pos: Tuple[int, int] | List[Tuple[int, int]]) -> None:
 		"""
-		The append_focis function adds a position to the list of focis positions.
-		If the focis_pos attribute is None, then it creates an empty list and appends
+		The append_foci function adds a position to the list of foci positions.
+		If the foci_pos attribute is None, then it creates an empty list and appends
 		the position to that. If it's not None, then it just appends the position.
 		
 		:param self: Reference the object itself, i
-		:param pos: Specify the position of a focis
+		:param pos: Specify the position of a foci
 		:return: None
 		"""
-		if self.focis_pos is None:
-			self.focis_pos = []
+		if self.foci_pos is None:
+			self.foci_pos = []
 
 		if isinstance(pos, list):
-			self.focis_pos.extend(pos)
+			self.foci_pos.extend(pos)
 		else:
-			self.focis_pos.append(pos)
+			self.foci_pos.append(pos)
 
-	def remove_focis(self, pos: Tuple[int, int] | List[Tuple[int, int]]) -> None:
+	def remove_foci(self, pos: Tuple[int, int] | List[Tuple[int, int]]) -> None:
 		"""
-		The remove_focis function removes the given position from the list of focis.
+		The remove_foci function removes the given position from the list of foci.
 		If a list is passed in, all positions in the list are removed.
 		
 		:param pos: Specify the position of the foci to delete or a list of positions
 		:return: None
 		"""
-		if self.focis_pos is None:
+		if self.foci_pos is None:
 			return
 
 		if isinstance(pos, list):
 			for p in pos:
-				self.focis_pos.remove(p)
+				self.foci_pos.remove(p)
 		else:
-			self.focis_pos.remove(pos)
+			self.foci_pos.remove(pos)
 
-	def sync_focis(self, pos: Tuple[int, int] | List[Tuple[int, int]]) -> None:
+	def sync_foci(self, pos: Tuple[int, int] | List[Tuple[int, int]]) -> None:
 		"""
-		The sync_focis function overrides focis from the model, by setting the given position to the list of focis.
+		The sync_foci function overrides foci from the model, by setting the given position to the list of foci.
 		If a list is passed in, all positions in the list are added.
 
 		:param pos: Specify the position of the foci to sync or a list of positions
 		:return: None
 		"""
-		if self.focis_pos is None:
-			self.focis_pos = []
+		if self.foci_pos is None:
+			self.foci_pos = []
 
-		self.focis_pos = pos if isinstance(pos, list) else [pos]
+		self.foci_pos = pos if isinstance(pos, list) else [pos]
 
 	@staticmethod
 	def get_pigment_matrix(P0: np.ndarray, P1: np.ndarray, P2: np.ndarray) -> np.ndarray:

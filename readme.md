@@ -25,7 +25,7 @@ It's a class that can be used to generate numerical solutions to the eyespot pat
 from src.model import Model
 
 model = Model()
-model.sync_focis([
+model.sync_foci([
 	(50, 49), (50, 50), (50, 51),
 ])
 model.solve()

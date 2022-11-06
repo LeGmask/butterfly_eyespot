@@ -52,7 +52,7 @@ def run_simulation():
 		)
 
 		# we sync the model with the given foci
-		model.sync_focis(A0_pos)
+		model.sync_foci(A0_pos)
 
 		# Run the simulation
 		model.solve()
